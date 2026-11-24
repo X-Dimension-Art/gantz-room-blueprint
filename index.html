@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>ガンツ部屋 設計図 ・ GANTZ ROOM BLUEPRINT</title>
+<link rel="icon" href="data:,">
+<meta name="description" content="ガンツの部屋と建物を、原作のページから図面にしました。実線は原作で確認できたところ、破線は推定です。The GANTZ room and its building as a living blueprint.">
+<meta name="theme-color" content="#0a2450">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ガンツ部屋 設計図 ・ GANTZ ROOM BLUEPRINT">
+<meta property="og:title" content="ガンツ部屋 設計図 ・ GANTZ ROOM BLUEPRINT">
+<meta property="og:description" content="黒い球の部屋を図面で歩く。実線＝原作で確認、破線＝推定。Walk the GANTZ room as a blueprint: solid lines are seen in the manga, dashed lines are our guess.">
+<meta property="og:url" content="https://x-dimension-art.github.io/gantz-room-blueprint/">
+<meta property="og:image" content="https://x-dimension-art.github.io/gantz-room-blueprint/preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ガンツ部屋 設計図 ・ GANTZ ROOM BLUEPRINT">
+<meta name="twitter:description" content="黒い球の部屋を図面で歩く。実線＝原作で確認、破線＝推定。Solid lines are seen in the manga, dashed lines are our guess.">
+<meta name="twitter:image" content="https://x-dimension-art.github.io/gantz-room-blueprint/preview.png">
+<link rel="stylesheet" href="./style.css?v=f8369a73">
+<script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script>
+</head>
+<body>
+<canvas id="c" aria-label="ガンツ部屋の図面 / blueprint of the GANTZ room"></canvas>
+<div id="frame" aria-hidden="true"></div>
+<div id="tags"></div>
+
+<div id="title" class="ui" data-inset-p="top" data-inset-l="bottom-plan">
+  <div class="tb-main">
+    <div class="tb-t"><b>ガンツ部屋 設計図</b><span>GANTZ ROOM BLUEPRINT</span></div>
+    <div class="tb-sheet"><label>図番 SHEET</label><b id="sheet">A-02</b></div>
+  </div>
+  <div class="tb-row">
+    <div><label>図面 VIEW</label><b id="vname">断面パース <small>CUTAWAY</small></b></div>
+    <div><label>縮尺 SCALE</label><b id="scaleNTS">NTS <small>縮尺なし</small></b><b id="scaleBar" style="display:none"><i></i><em>1 m</em></b></div>
+    <div class="hide-p"><label>場所 SITE</label><b>東京 <small>TOKYO</small></b></div>
+    <div class="p-only by"><b>@X_DimensionNews</b><small>fan-made map</small></div>
+    <button id="legBtn" class="p-only" aria-label="凡例 legend">凡例<small>LEGEND</small></button>
+    <div id="hint" aria-live="polite"></div>
+  </div>
+  <div class="tb-row tb-by">
+    <div class="wide"><label>製図 DRAWN BY</label><b>@X_DimensionNews</b></div>
+    <div class="hide-p"><label>日付 DATE</label><b>2026.11</b></div>
+  </div>
+  <div class="tb-foot"><span>fan-made map ・ ファン制作の非公式図面</span></div>
+</div>
+
+<button id="snd" aria-label="音 sound">音 <small>OFF</small></button>
+<button id="figBtn" class="on" aria-pressed="true" aria-label="スケール用の人型 scale figure"><svg viewBox="-10 -2 20 36" aria-hidden="true"><circle cx="0" cy="3.4" r="3"/><path d="M-1.4 7.2 L-5.6 8.6 L-6.6 21 L-5 21.4 L-4.6 12 L-4.2 25.5 L-4 34 L-1 34 L-1 20.5 L0 20 L1 20.5 L1 34 L4 34 L4.2 25.5 L4.6 12 L5 21.4 L6.6 21 L5.6 8.6 L1.4 7.2"/></svg><span>人型<small>1.70m</small></span></button>
+
+<div id="legend" class="ui" data-inset-p="bottom" data-inset-l="bottom">
+  <div class="lg"><svg width="34" height="6" aria-hidden="true"><line x1="1" y1="3" x2="33" y2="3"/></svg><span>実線＝原作で確認 <small>solid: seen in the manga</small></span></div>
+  <div class="lg"><svg width="34" height="6" aria-hidden="true"><line x1="1" y1="3" x2="33" y2="3" stroke-dasharray="5 3.5"/></svg><span>破線＝推定 <small>dashed: our guess</small></span></div>
+  <div class="lg dot"><svg width="34" height="6" aria-hidden="true"><line x1="2" y1="3" x2="33" y2="3" stroke-dasharray="1.2 4.5"/></svg><span>点線の街並みはイメージ <small>dotted city: only a mood image</small></span></div>
+  <div class="note">寸法はすべて推定 <small>all sizes are our estimates</small></div>
+</div>
+
+<nav id="views" class="ui" data-inset-p="bottom" data-inset-l="bottom">
+  <button data-v="building">外観<small>Building</small></button>
+  <button data-v="plan">平面図<small>Plan</small></button>
+  <button data-v="cut" class="on">断面<small>Cutaway</small></button>
+  <button data-v="inside">室内<small>Inside</small></button>
+  <button id="tourBtn" class="tourb">ツアー<small>Tour</small></button>
+</nav>
+<button id="tourOffer" aria-label="ツアーを始める start the tour"><b>ツアーを始める</b><small>Start the tour ・ 8 stops</small></button>
+
+<div id="compass" aria-hidden="true"><svg class="arr" viewBox="-30 -30 60 60"><circle r="26"/><circle r="21" class="in"/><path d="M0 -24 L7 6 L0 1 L-7 6 Z"/><line y1="1" y2="22"/></svg><span>東京タワーの方向(推定)<small>TOKYO TOWER, OUR GUESS</small></span></div>
+<div id="keyplan" aria-hidden="true"><svg viewBox="-25 -25 50 50"></svg><span>基準階の平面(推定)<small>TYPICAL FLOOR, OUR GUESS</small></span><span class="k"><i class="u"></i>ガンツ部屋 <i class="c"></i>共用廊下 <i class="t"></i>東京タワー</span></div>
+
+<div id="card" role="dialog" aria-live="polite">
+  <button class="x" aria-label="閉じる close">×</button>
+  <div class="hd"><span class="num"></span><div><div class="lj"></div><div class="le"></div></div></div>
+  <div class="st"></div>
+  <div class="stn"></div>
+  <p class="fj"></p>
+  <p class="fe"></p>
+  <div class="src"><label>原作のページ <span>WHERE IN THE MANGA</span></label><ul class="refs"></ul><small>ページ番号は英語版 ・ English edition page</small></div>
+  <button id="openBtn"></button>
+  <div id="tourbar"><button id="tPrev">前へ<small>BACK</small></button><span id="tCount">1 / 8</span><button id="tNext">次へ<small>NEXT</small></button></div>
+</div>
+
+<div id="cap"></div>
+<div id="opening" aria-hidden="true"><b>ガンツ部屋 設計図</b><span>GANTZ ROOM BLUEPRINT</span><em>東京のどこか ・ SOMEWHERE IN TOKYO</em></div>
+<button id="skip">スキップ <small>SKIP</small></button>
+
+<script type="module" src="./app.js?v=aa8d801d"></script>
+</body>
+</html>
